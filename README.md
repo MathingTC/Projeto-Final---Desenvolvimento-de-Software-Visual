@@ -40,7 +40,7 @@ As etapas de preparo ditam a linha cronológica de execução da receita. Cada p
 
 ### 🔗 Vínculo Dinâmico de Receitas (Tabela Pivô)
 <p align="justify">
-Através de uma arquitetura relacional otimizada, o sistema conecta receitas a múltiplos ingredientes e quantidades específicas (ex: 200g de farinha, 3 unidades de ovos). Esta abordagem separa a existência física do ingrediente em si da quantidade exata exigida por um prato específico, permitindo a reutilização do mesmo insumo em centenas de receitas diferentes.
+Através de uma arquitetura relacional otimizada, o sistema conecta receitas a múltiplos ingredientes e quantidades específicas (ex: 200g de farinha, 3 unidades de ovos). Esta abordagem separa a existência física do ingrediente em si da quantidade exata exigida por um prato específico, permitindo a reutilização do mesmo insumo em diversas receitas diferentes.
 </p>
 
 ### 🧮 Busca Inversa por Insumos
