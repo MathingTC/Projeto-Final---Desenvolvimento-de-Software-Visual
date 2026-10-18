@@ -77,13 +77,14 @@ O backend é construído sobre o ecossistema <strong>ASP.NET Core</strong> utili
 
 Para sustentar as funcionalidades descritas, a modelagem relacional do banco de dados foi estruturada da seguinte forma:
 
+
 | Tabela | Coluna | Tipo de Dado | Chave | Descrição / Regra |
 | :--- | :--- | :--- | :--- | :--- |
 | **Receitas** | `Id` <br> `Nome` <br> `Descricao` | Guid <br> VARCHAR <br> TEXT | PK <br> - <br> - | Identificador único global da receita. <br> Nome do prato (ex: "Bolo de Cenoura"). <br> Detalhes ou história do prato. |
 | **Ingredientes** | `Id` <br> `Nome` | Guid <br> VARCHAR | PK <br> - | Identificador único do ingrediente na base. <br> Nome do item (ex: "Ovo", "Farinha"). |
 | **Etapas** | `Id` <br> `Ordem` <br> `Descricao` <br> `ReceitaId` | Guid <br> INT <br> TEXT <br> Guid | PK <br> - <br> - <br> FK | Identificador único do passo de preparo. <br> Passo sequencial numérico (ex: 1, 2, 3). <br> Instrução clara da ação a ser tomada. <br> Vinculação direta com a receita dona da etapa. |
-| **ReceitasIngredientes** <br> *(Tabela Pivô)* | `ReceitaId` <br> `IngredienteId` <br> `Quantidade` <br> `UnidadeMedida` | Guid <br> Guid <br> DECIMAL <br> VARCHAR | PK / FK <br> PK / FK <br> - <br> - | Chave composta. Associa o ingrediente à receita. <br> Chave composta. Associa o ingrediente à receita. <br> Proporção necessária para o prato. <br> Métrica utilizada (ex: "g", "ml", "unidades"). |
-
+| **ReceitasIngredientes** <br> *(Tabela Pivô)* | `ReceitaId` <br> `IngredienteId` <br> `Quantidade` <br> `UnidadeMedida` | Guid <br> Guid <br> DECIMAL <br> VARCHAR | PK&nbsp;/&nbsp;FK <br> PK&nbsp;/&nbsp;FK <br> - <br> - | Chave composta. Associa o ingrediente à receita. <br> Chave composta. Associa o ingrediente à receita. <br> Proporção necessária para o prato. <br> Métrica utilizada (ex: "g", "ml", "unidades"). |
+  
 ---
 
 ## 🤖 Uso de AI (Inteligência Artificial)
