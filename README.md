@@ -93,5 +93,6 @@ Para sustentar as funcionalidades descritas, a modelagem relacional do banco de 
 * **Modelos de Linguagem:** OpenAI ChatGPT (baseado em GPT-4o) e Claude 3.5 Sonnet (via assistente de IA).
 
 ### ⚙️ Forma de Uso
-* **Geração de Testes Automatizados:** <p align="justify">A ferramenta de IA foi integrada ao fluxo de desenvolvimento para analisar a lógica de negócio dos endpoints da API Mínima e gerar cenários de testes unitários e de integração correspondentes.</p>
+* **Geração de Testes Automatizados:** <p align="justify">A ferramenta de IA será integrada ao fluxo de desenvolvimento para analisar a lógica de negócio dos endpoints da API Mínima e gerar cenários de testes unitários e de integração correspondentes.</p>
 * **Escrita de Documentação Técnica:** <p align="justify">Utilizada para expandir as notas rascunhadas do projeto em um formato de documentação acadêmica formal, padronizando a descrição das funcionalidades e gerando o layout Markdown da modelagem de dados.</p>
+- **Planejamento e organização:** <p align="justify">A IA também será utilizada para auxiliar no planejamento do projeto, ajudando na criação de *issues* no GitHub e na divisão do desenvolvimento em tarefas menores, facilitando a organização e o acompanhamento do progresso da equipe.</p>
