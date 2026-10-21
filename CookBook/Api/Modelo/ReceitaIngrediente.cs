@@ -1,0 +1,10 @@
+namespace Api.modelo;
+public class ReceitaIngrediente
+{
+    public Guid ReceitaId {get;set;}
+    public Receita? Receita {get;set;}
+    public Guid IngredienteId {get;set;}
+    public Ingrediente? Ingrediente {get;set;}
+    public decimal Quantidade {get;set;}
+    public string UnidadeMedida {get;set;} = string.Empty;
+}
