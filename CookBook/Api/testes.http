@@ -1,0 +1,10 @@
+### Raiz
+GET http://localhost:5093
+
+###Cadastrar ingrediente
+POST "/api/ings/cadastrar"
+Content-Type: application/json
+
+{
+    "Nome" : "Tomate",
+}
