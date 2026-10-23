@@ -38,6 +38,29 @@ namespace Api.Migrations
                     b.HasIndex("ReceitaId");
 
                     b.ToTable("Etapas");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("3dad37a1-36c5-401d-9e83-7a2038844f31"),
+                            Descricao = "Adicione o leite condensado, a margarina e o chocolate em pó numa panela funda",
+                            Ordem = 1,
+                            ReceitaId = new Guid("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe")
+                        },
+                        new
+                        {
+                            Id = new Guid("125f8380-478c-4c4e-bde6-e0b0f4c6790f"),
+                            Descricao = "Cozinhe em fogo médio até o brigadeiro se soltar do fundo da panela",
+                            Ordem = 2,
+                            ReceitaId = new Guid("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe")
+                        },
+                        new
+                        {
+                            Id = new Guid("75b168ed-76a2-441f-b576-5d5cd9b1f1e2"),
+                            Descricao = "Resfrie e prepare no formato de pequenas bolas, cobrindo com o chocolate granulado",
+                            Ordem = 3,
+                            ReceitaId = new Guid("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe")
+                        });
                 });
 
             modelBuilder.Entity("Api.modelo.Ingrediente", b =>

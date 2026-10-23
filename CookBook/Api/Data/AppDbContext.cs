@@ -61,5 +61,24 @@ public class AppDbContext : DbContext
                     Nome = "Chocolate Granulado"
                 }
             );
+
+        modelBuilder.Entity<Etapa>()
+            .HasData(
+                new Etapa {
+                    Descricao = "Adicione o leite condensado, a margarina e o chocolate em pó numa panela funda",
+                    Ordem = 1,
+                    ReceitaId = Guid.Parse("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe")
+                },
+                new Etapa {
+                    Descricao = "Cozinhe em fogo médio até o brigadeiro se soltar do fundo da panela",
+                    Ordem = 2,
+                    ReceitaId = Guid.Parse("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe")
+                },
+                new Etapa {
+                    Descricao = "Resfrie e prepare no formato de pequenas bolas, cobrindo com o chocolate granulado",
+                    Ordem = 3,
+                    ReceitaId = Guid.Parse("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe")
+                }
+            );
     }
 }
