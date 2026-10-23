@@ -1,5 +1,4 @@
-using Microsoft.EntityFrameworkCore;
-using Api.Data;
+using Api.Data; // Renomear 'AppDbContext' para 'AppDataContext'
 using Microsoft.AspNetCore.Mvc;
 using Api.modelo;
 

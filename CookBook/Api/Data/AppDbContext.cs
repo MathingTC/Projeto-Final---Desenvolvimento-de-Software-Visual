@@ -33,6 +33,78 @@ public class AppDbContext : DbContext
                 // Define uma chave primária composta (ReceitaId + IngredienteId),
                 // impedindo que o mesmo ingrediente seja cadastrado duas vezes na mesma receita.
                 j => j.HasKey(ir => new {ir.ReceitaId, ir.IngredienteId})
-            ); 
+            )
+            .HasData(
+                new Receita {
+                    Id = Guid.Parse("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe"),
+                    Nome = "Brigadeiro",
+                    Descricao = "Doce comum brasileiro"
+                }
+            );
+
+        modelBuilder.Entity<Ingrediente>()
+            .HasData(
+                new Ingrediente {
+                    Id = Guid.Parse("cf96e0a2-c665-4202-b0b8-200dbfd89d40"),
+                    Nome = "Leite Consendado"
+                },
+                new Ingrediente {
+                    Id = Guid.Parse("5ddff53a-e787-4ad9-9883-39b6cb185aff"),
+                    Nome = "Chocolate em Pó"
+                },
+                new Ingrediente {
+                    Id = Guid.Parse("84582dba-47a5-4463-9047-999374b05ef9"),
+                    Nome = "Margarina sem Sal"
+                },
+                new Ingrediente {
+                    Id = Guid.Parse("59f0d6fc-6fd6-44ad-8333-4890587b07c8"),
+                    Nome = "Chocolate Granulado"
+                }
+            );
+
+        modelBuilder.Entity<Etapa>()
+            .HasData(
+                new Etapa {
+                    Descricao = "Adicione o leite condensado, a margarina e o chocolate em pó numa panela funda",
+                    Ordem = 1,
+                    ReceitaId = Guid.Parse("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe")
+                },
+                new Etapa {
+                    Descricao = "Cozinhe em fogo médio até o brigadeiro se soltar do fundo da panela",
+                    Ordem = 2,
+                    ReceitaId = Guid.Parse("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe")
+                },
+                new Etapa {
+                    Descricao = "Resfrie e prepare no formato de pequenas bolas, cobrindo com o chocolate granulado",
+                    Ordem = 3,
+                    ReceitaId = Guid.Parse("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe")
+                }
+            );
+
+        modelBuilder.Entity<IngredienteReceita>()
+            .HasData(
+                    new IngredienteReceita {
+                        IngredienteId = Guid.Parse("cf96e0a2-c665-4202-b0b8-200dbfd89d40"),
+                        ReceitaId = Guid.Parse("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe"),
+                        Quantidade = 1,
+                        UnidadeMedida = "lata"
+                    },
+                    new IngredienteReceita {
+                        IngredienteId = Guid.Parse("5ddff53a-e787-4ad9-9883-39b6cb185aff"),
+                        ReceitaId = Guid.Parse("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe"),
+                        Quantidade = 4,
+                        UnidadeMedida = "colheres de sopa"
+                    },
+                    new IngredienteReceita {
+                        IngredienteId = Guid.Parse("84582dba-47a5-4463-9047-999374b05ef9"),
+                        ReceitaId = Guid.Parse("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe"),
+                        Quantidade = 1,
+                        UnidadeMedida = "colher de sopa"
+                    },
+                    new IngredienteReceita {
+                        IngredienteId = Guid.Parse("59f0d6fc-6fd6-44ad-8333-4890587b07c8"),
+                        ReceitaId = Guid.Parse("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe"),
+                    }
+            );
     }
 }
