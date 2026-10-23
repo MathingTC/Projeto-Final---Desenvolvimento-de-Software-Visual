@@ -34,7 +34,8 @@ app.MapPost("/api/ingredientes/cadastrar", (
 
 });
 
-app.MapGet("ingredientes", (
+//Endpoint para listar ingredientes em ordem alfabetica
+app.MapGet("/ingredientes", (
     [FromServices] AppDbContext ctx) =>
 {
     var ingredientes = ctx.Ingredientes
