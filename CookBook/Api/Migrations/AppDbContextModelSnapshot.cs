@@ -53,6 +53,28 @@ namespace Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Ingredientes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("cf96e0a2-c665-4202-b0b8-200dbfd89d40"),
+                            Nome = "Leite Consendado"
+                        },
+                        new
+                        {
+                            Id = new Guid("5ddff53a-e787-4ad9-9883-39b6cb185aff"),
+                            Nome = "Chocolate em Pó"
+                        },
+                        new
+                        {
+                            Id = new Guid("84582dba-47a5-4463-9047-999374b05ef9"),
+                            Nome = "Margarina sem Sal"
+                        },
+                        new
+                        {
+                            Id = new Guid("59f0d6fc-6fd6-44ad-8333-4890587b07c8"),
+                            Nome = "Chocolate Granulado"
+                        });
                 });
 
             modelBuilder.Entity("Api.modelo.IngredienteReceita", b =>

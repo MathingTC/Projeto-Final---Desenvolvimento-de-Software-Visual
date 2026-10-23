@@ -33,6 +33,26 @@ public class AppDbContext : DbContext
                 // Define uma chave primária composta (ReceitaId + IngredienteId),
                 // impedindo que o mesmo ingrediente seja cadastrado duas vezes na mesma receita.
                 j => j.HasKey(ir => new {ir.ReceitaId, ir.IngredienteId})
-            ); 
+            );
+
+        modelBuilder.Entity<Ingrediente>()
+            .HasData(
+                new Ingrediente {
+                    Id = Guid.Parse("cf96e0a2-c665-4202-b0b8-200dbfd89d40"),
+                    Nome = "Leite Consendado"
+                },
+                new Ingrediente {
+                    Id = Guid.Parse("5ddff53a-e787-4ad9-9883-39b6cb185aff"),
+                    Nome = "Chocolate em Pó"
+                },
+                new Ingrediente {
+                    Id = Guid.Parse("84582dba-47a5-4463-9047-999374b05ef9"),
+                    Nome = "Margarina sem Sal"
+                },
+                new Ingrediente {
+                    Id = Guid.Parse("59f0d6fc-6fd6-44ad-8333-4890587b07c8"),
+                    Nome = "Chocolate Granulado"
+                }
+            );
     }
 }

@@ -1,5 +1,4 @@
-using Microsoft.EntityFrameworkCore;
-using Api.Data;
+using Api.Data; // Renomear 'AppDbContext' para 'AppDataContext'
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>();
