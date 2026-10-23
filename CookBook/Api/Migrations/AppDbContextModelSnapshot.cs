@@ -42,21 +42,21 @@ namespace Api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("3dad37a1-36c5-401d-9e83-7a2038844f31"),
+                            Id = new Guid("73dabe6e-dedb-4152-88e7-ebde1e3fcb1d"),
                             Descricao = "Adicione o leite condensado, a margarina e o chocolate em pó numa panela funda",
                             Ordem = 1,
                             ReceitaId = new Guid("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe")
                         },
                         new
                         {
-                            Id = new Guid("125f8380-478c-4c4e-bde6-e0b0f4c6790f"),
+                            Id = new Guid("1f5527ef-d317-4a95-be75-dbcb35be730b"),
                             Descricao = "Cozinhe em fogo médio até o brigadeiro se soltar do fundo da panela",
                             Ordem = 2,
                             ReceitaId = new Guid("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe")
                         },
                         new
                         {
-                            Id = new Guid("75b168ed-76a2-441f-b576-5d5cd9b1f1e2"),
+                            Id = new Guid("5ddc224d-1ffe-4b7b-b831-597934d0ff70"),
                             Descricao = "Resfrie e prepare no formato de pequenas bolas, cobrindo com o chocolate granulado",
                             Ordem = 3,
                             ReceitaId = new Guid("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe")
@@ -108,8 +108,8 @@ namespace Api.Migrations
                     b.Property<Guid>("IngredienteId")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("Quantidade")
-                        .HasColumnType("TEXT");
+                    b.Property<float?>("Quantidade")
+                        .HasColumnType("REAL");
 
                     b.Property<string>("UnidadeMedida")
                         .IsRequired()
@@ -120,6 +120,35 @@ namespace Api.Migrations
                     b.HasIndex("IngredienteId");
 
                     b.ToTable("IngredienteReceitas");
+
+                    b.HasData(
+                        new
+                        {
+                            ReceitaId = new Guid("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe"),
+                            IngredienteId = new Guid("cf96e0a2-c665-4202-b0b8-200dbfd89d40"),
+                            Quantidade = 1f,
+                            UnidadeMedida = "lata"
+                        },
+                        new
+                        {
+                            ReceitaId = new Guid("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe"),
+                            IngredienteId = new Guid("5ddff53a-e787-4ad9-9883-39b6cb185aff"),
+                            Quantidade = 4f,
+                            UnidadeMedida = "colheres de sopa"
+                        },
+                        new
+                        {
+                            ReceitaId = new Guid("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe"),
+                            IngredienteId = new Guid("84582dba-47a5-4463-9047-999374b05ef9"),
+                            Quantidade = 1f,
+                            UnidadeMedida = "colher de sopa"
+                        },
+                        new
+                        {
+                            ReceitaId = new Guid("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe"),
+                            IngredienteId = new Guid("59f0d6fc-6fd6-44ad-8333-4890587b07c8"),
+                            UnidadeMedida = ""
+                        });
                 });
 
             modelBuilder.Entity("Api.modelo.Receita", b =>

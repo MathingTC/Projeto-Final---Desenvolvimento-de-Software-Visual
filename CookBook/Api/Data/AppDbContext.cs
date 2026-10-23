@@ -80,5 +80,31 @@ public class AppDbContext : DbContext
                     ReceitaId = Guid.Parse("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe")
                 }
             );
+
+        modelBuilder.Entity<IngredienteReceita>()
+            .HasData(
+                    new IngredienteReceita {
+                        IngredienteId = Guid.Parse("cf96e0a2-c665-4202-b0b8-200dbfd89d40"),
+                        ReceitaId = Guid.Parse("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe"),
+                        Quantidade = 1,
+                        UnidadeMedida = "lata"
+                    },
+                    new IngredienteReceita {
+                        IngredienteId = Guid.Parse("5ddff53a-e787-4ad9-9883-39b6cb185aff"),
+                        ReceitaId = Guid.Parse("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe"),
+                        Quantidade = 4,
+                        UnidadeMedida = "colheres de sopa"
+                    },
+                    new IngredienteReceita {
+                        IngredienteId = Guid.Parse("84582dba-47a5-4463-9047-999374b05ef9"),
+                        ReceitaId = Guid.Parse("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe"),
+                        Quantidade = 1,
+                        UnidadeMedida = "colher de sopa"
+                    },
+                    new IngredienteReceita {
+                        IngredienteId = Guid.Parse("59f0d6fc-6fd6-44ad-8333-4890587b07c8"),
+                        ReceitaId = Guid.Parse("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe"),
+                    }
+            );
     }
 }
