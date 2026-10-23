@@ -8,7 +8,7 @@ builder.Services.AddDbContext<AppDbContext>();
 var app = builder.Build();
 
 //Endpoint para cadastrar um ingrediente POST
-app.MapPost("/api/ings/cadastrar", (
+app.MapPost("/api/ingredientes/cadastrar", (
     [FromBody] Ingrediente? ing, 
     [FromServices] AppDbContext ctx) =>
 {
