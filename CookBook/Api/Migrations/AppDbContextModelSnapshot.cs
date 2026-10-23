@@ -116,6 +116,14 @@ namespace Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Receitas");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe"),
+                            Descricao = "Doce comum brasileiro",
+                            Nome = "Brigadeiro"
+                        });
                 });
 
             modelBuilder.Entity("Api.modelo.Etapa", b =>
