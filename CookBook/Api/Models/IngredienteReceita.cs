@@ -1,4 +1,3 @@
-namespace Api.modelo;
 public class IngredienteReceita
 {
     public Guid ReceitaId {get;set;}

@@ -1,14 +1,11 @@
 using Microsoft.EntityFrameworkCore;
-using Api.modelo;
 
-namespace Api.Data;
-
-public class AppDbContext : DbContext
+public class AppDataContext : DbContext
 {
-    public DbSet<Receita> Receitas { get; set; }
-    public DbSet<Ingrediente> Ingredientes { get; set; }
-    public DbSet<IngredienteReceita> IngredienteReceitas { get; set; }
-    public DbSet<Etapa> Etapas { get; set; }
+    public required DbSet<Receita> Receitas { get; set; }
+    public required DbSet<Ingrediente> Ingredientes { get; set; }
+    public required DbSet<IngredienteReceita> IngredienteReceitas { get; set; }
+    public required DbSet<Etapa> Etapas { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlite("Data Source=CookBook.db");

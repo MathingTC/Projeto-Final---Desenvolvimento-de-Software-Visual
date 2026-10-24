@@ -1,16 +1,13 @@
-using Microsoft.EntityFrameworkCore;
-using Api.Data;
 using Microsoft.AspNetCore.Mvc;
-using Api.modelo;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<AppDbContext>();
+builder.Services.AddDbContext<AppDataContext>();
 var app = builder.Build();
 
 //Endpoint para cadastrar um ingrediente POST
 app.MapPost("/api/ingredientes/cadastrar", (
     [FromBody] Ingrediente? ing, 
-    [FromServices] AppDbContext ctx) =>
+    [FromServices] AppDataContext ctx) =>
 {
     if (ing == null)
     {
@@ -36,7 +33,7 @@ app.MapPost("/api/ingredientes/cadastrar", (
 
 //Endpoint para listar ingredientes em ordem alfabetica
 app.MapGet("/api/ingredientes/listar", (
-    [FromServices] AppDbContext ctx) =>
+    [FromServices] AppDataContext ctx) =>
 {
     var ingredientes = ctx.Ingredientes
         .OrderBy(i => i.Nome)

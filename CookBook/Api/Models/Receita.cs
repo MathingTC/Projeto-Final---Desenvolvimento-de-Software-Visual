@@ -1,5 +1,3 @@
-namespace Api.modelo;
-
 public class Receita
 {
     public Guid Id {get;set;} = Guid.NewGuid();
