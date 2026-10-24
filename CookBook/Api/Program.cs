@@ -1,4 +1,5 @@
-using Api.Data; // Renomear 'AppDbContext' para 'AppDataContext'
+using Microsoft.EntityFrameworkCore;
+using Api.Data;
 using Microsoft.AspNetCore.Mvc;
 using Api.modelo;
 
@@ -31,6 +32,27 @@ app.MapPost("/api/ingredientes/cadastrar", (
     ctx.SaveChanges();
     return Results.Created("",ing);
 
+});
+
+//Endpoint para listar ingredientes em ordem alfabetica
+app.MapGet("/api/ingredientes/listar", (
+    [FromServices] AppDbContext ctx) =>
+{
+    var ingredientes = ctx.Ingredientes
+        .OrderBy(i => i.Nome)
+        .Select(i => new
+        {
+            i.Id,
+            i.Nome
+        })
+        .ToList();
+    
+    if (ingredientes.Count == 0)
+    {
+        return Results.Ok("Lista de ingredientes vazia!");
+    }
+
+    return Results.Ok(ingredientes);
 });
 
 app.Run();
