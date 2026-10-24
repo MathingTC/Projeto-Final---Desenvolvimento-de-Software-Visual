@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,7 +12,7 @@ app.MapPost("/api/ingredientes/cadastrar", (
 {
     if (ing == null)
     {
-        return Results.BadRequest("O ingrediente não pode ser nulo.");
+        return Results.BadRequest("Dados inválidos");
     }
      if(ing.Nome == "")
     {
@@ -27,7 +28,7 @@ app.MapPost("/api/ingredientes/cadastrar", (
 
     ctx.Ingredientes.Add(ing);
     ctx.SaveChanges();
-    return Results.Created("",ing);
+    return Results.Created("Ingrediente criado",ing);
 
 });
 
@@ -50,6 +51,57 @@ app.MapGet("/api/ingredientes/listar", (
     }
 
     return Results.Ok(ingredientes);
+});
+
+//Endpoint para deletar ingrediente
+app.MapDelete("/api/ingredientes/remover/{id}", (
+    [FromRoute] Guid id,
+    [FromServices] AppDataContext ctx) =>
+{
+    var ing = ctx.Ingredientes
+        .Include(i => i.Receitas)
+        .SingleOrDefault(i => i.Id == id);
+
+    if (ing == null) {
+        return Results.NotFound("Ingrediente não encontrado");
+    }
+
+    if (ing.Receitas.Any()) {
+        return Results.BadRequest("Ingrediente faz parte de receitas e não pode ser deletado");
+    }
+
+    ctx.Ingredientes.Remove(ing);
+    //ctx.SaveChanges();
+
+    return Results.NoContent();
+});
+
+//Endpoint para editar ingrediente
+app.MapPut("/api/ingredientes/editar/{id}", (
+    [FromRoute] Guid id,
+    [FromBody] Ingrediente newIng,
+    [FromServices] AppDataContext ctx) =>
+{
+    if (newIng == null)
+    {
+        return Results.BadRequest("Dados inválidos");
+    }
+
+    if (newIng.Nome == "")
+    {
+        return Results.BadRequest("O novo nome não pode ser vazio");
+    }
+
+    var ing = ctx.Ingredientes.Find(id);
+    if (ing == null) {
+        return Results.NotFound("Ingrediente não encontrado");
+    }
+
+    ing.Nome = newIng.Nome;
+
+    ctx.SaveChanges();
+
+    return Results.Created("Ingrediente atualizado", ing);
 });
 
 app.Run();

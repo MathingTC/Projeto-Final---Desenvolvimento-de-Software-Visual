@@ -4,5 +4,5 @@ public class Etapa
     public int Ordem {get;set;}
     public string Descricao {get;set;} = string.Empty;
     public Guid ReceitaId {get;set;}
-    public Receita? Receita {get;set;}
+    public Receita Receita {get;set;} = null!;
 }

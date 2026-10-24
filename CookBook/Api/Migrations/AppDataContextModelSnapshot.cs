@@ -16,7 +16,7 @@ namespace Api.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.32");
 
-            modelBuilder.Entity("Api.modelo.Etapa", b =>
+            modelBuilder.Entity("Etapa", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -41,28 +41,28 @@ namespace Api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("73dabe6e-dedb-4152-88e7-ebde1e3fcb1d"),
+                            Id = new Guid("7e3f9a1c-5b24-4d68-9c07-a2f1d84b6e35"),
                             Descricao = "Adicione o leite condensado, a margarina e o chocolate em pó numa panela funda",
                             Ordem = 1,
                             ReceitaId = new Guid("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe")
                         },
                         new
                         {
-                            Id = new Guid("1f5527ef-d317-4a95-be75-dbcb35be730b"),
+                            Id = new Guid("c8a05d72-1f9e-4b3a-8e46-0d7b93f2a1c8"),
                             Descricao = "Cozinhe em fogo médio até o brigadeiro se soltar do fundo da panela",
                             Ordem = 2,
                             ReceitaId = new Guid("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe")
                         },
                         new
                         {
-                            Id = new Guid("5ddc224d-1ffe-4b7b-b831-597934d0ff70"),
+                            Id = new Guid("3b6d1e94-a7c2-4f05-b18d-e5c90a47d263"),
                             Descricao = "Resfrie e prepare no formato de pequenas bolas, cobrindo com o chocolate granulado",
                             Ordem = 3,
                             ReceitaId = new Guid("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe")
                         });
                 });
 
-            modelBuilder.Entity("Api.modelo.Ingrediente", b =>
+            modelBuilder.Entity("Ingrediente", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -80,7 +80,7 @@ namespace Api.Migrations
                         new
                         {
                             Id = new Guid("cf96e0a2-c665-4202-b0b8-200dbfd89d40"),
-                            Nome = "Leite Consendado"
+                            Nome = "Leite Condensado"
                         },
                         new
                         {
@@ -99,12 +99,12 @@ namespace Api.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Api.modelo.IngredienteReceita", b =>
+            modelBuilder.Entity("IngredienteReceita", b =>
                 {
-                    b.Property<Guid>("ReceitaId")
+                    b.Property<Guid>("IngredienteId")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("IngredienteId")
+                    b.Property<Guid>("ReceitaId")
                         .HasColumnType("TEXT");
 
                     b.Property<float?>("Quantidade")
@@ -114,43 +114,43 @@ namespace Api.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("ReceitaId", "IngredienteId");
+                    b.HasKey("IngredienteId", "ReceitaId");
 
-                    b.HasIndex("IngredienteId");
+                    b.HasIndex("ReceitaId");
 
                     b.ToTable("IngredienteReceitas");
 
                     b.HasData(
                         new
                         {
-                            ReceitaId = new Guid("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe"),
                             IngredienteId = new Guid("cf96e0a2-c665-4202-b0b8-200dbfd89d40"),
+                            ReceitaId = new Guid("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe"),
                             Quantidade = 1f,
                             UnidadeMedida = "lata"
                         },
                         new
                         {
-                            ReceitaId = new Guid("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe"),
                             IngredienteId = new Guid("5ddff53a-e787-4ad9-9883-39b6cb185aff"),
+                            ReceitaId = new Guid("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe"),
                             Quantidade = 4f,
                             UnidadeMedida = "colheres de sopa"
                         },
                         new
                         {
-                            ReceitaId = new Guid("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe"),
                             IngredienteId = new Guid("84582dba-47a5-4463-9047-999374b05ef9"),
+                            ReceitaId = new Guid("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe"),
                             Quantidade = 1f,
                             UnidadeMedida = "colher de sopa"
                         },
                         new
                         {
-                            ReceitaId = new Guid("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe"),
                             IngredienteId = new Guid("59f0d6fc-6fd6-44ad-8333-4890587b07c8"),
+                            ReceitaId = new Guid("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe"),
                             UnidadeMedida = ""
                         });
                 });
 
-            modelBuilder.Entity("Api.modelo.Receita", b =>
+            modelBuilder.Entity("Receita", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -177,9 +177,9 @@ namespace Api.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Api.modelo.Etapa", b =>
+            modelBuilder.Entity("Etapa", b =>
                 {
-                    b.HasOne("Api.modelo.Receita", "Receita")
+                    b.HasOne("Receita", "Receita")
                         .WithMany("Etapas")
                         .HasForeignKey("ReceitaId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -188,15 +188,15 @@ namespace Api.Migrations
                     b.Navigation("Receita");
                 });
 
-            modelBuilder.Entity("Api.modelo.IngredienteReceita", b =>
+            modelBuilder.Entity("IngredienteReceita", b =>
                 {
-                    b.HasOne("Api.modelo.Ingrediente", "Ingrediente")
+                    b.HasOne("Ingrediente", "Ingrediente")
                         .WithMany("IngredienteReceitas")
                         .HasForeignKey("IngredienteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Api.modelo.Receita", "Receita")
+                    b.HasOne("Receita", "Receita")
                         .WithMany("IngredienteReceitas")
                         .HasForeignKey("ReceitaId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -207,12 +207,12 @@ namespace Api.Migrations
                     b.Navigation("Receita");
                 });
 
-            modelBuilder.Entity("Api.modelo.Ingrediente", b =>
+            modelBuilder.Entity("Ingrediente", b =>
                 {
                     b.Navigation("IngredienteReceitas");
                 });
 
-            modelBuilder.Entity("Api.modelo.Receita", b =>
+            modelBuilder.Entity("Receita", b =>
                 {
                     b.Navigation("Etapas");
 
