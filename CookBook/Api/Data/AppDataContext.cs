@@ -1,14 +1,11 @@
 using Microsoft.EntityFrameworkCore;
-using Api.modelo;
 
-namespace Api.Data;
-
-public class AppDbContext : DbContext
+public class AppDataContext : DbContext
 {
-    public DbSet<Receita> Receitas { get; set; }
-    public DbSet<Ingrediente> Ingredientes { get; set; }
-    public DbSet<IngredienteReceita> IngredienteReceitas { get; set; }
-    public DbSet<Etapa> Etapas { get; set; }
+    public required DbSet<Receita> Receitas { get; set; }
+    public required DbSet<Ingrediente> Ingredientes { get; set; }
+    public required DbSet<IngredienteReceita> IngredienteReceitas { get; set; }
+    public required DbSet<Etapa> Etapas { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlite("Data Source=CookBook.db");
@@ -21,19 +18,9 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Receita>()
             .HasMany(r => r.Ingredientes)
             .WithMany(i => i.Receitas)
-            .UsingEntity<IngredienteReceita>( // Usado para conectar Receita e Igredientes
-                j => j.HasOne(ir => ir.Ingrediente)
-                    .WithMany(i => i.IngredienteReceitas)
-                    .HasForeignKey (ir => ir.IngredienteId),
+            .UsingEntity<IngredienteReceita>();
 
-                j => j.HasOne(ir => ir.Receita)
-                    .WithMany(r => r.IngredienteReceitas)
-                    .HasForeignKey (ir => ir.ReceitaId),
-                
-                // Define uma chave primária composta (ReceitaId + IngredienteId),
-                // impedindo que o mesmo ingrediente seja cadastrado duas vezes na mesma receita.
-                j => j.HasKey(ir => new {ir.ReceitaId, ir.IngredienteId})
-            )
+        modelBuilder.Entity<Receita>()
             .HasData(
                 new Receita {
                     Id = Guid.Parse("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe"),
@@ -46,7 +33,7 @@ public class AppDbContext : DbContext
             .HasData(
                 new Ingrediente {
                     Id = Guid.Parse("cf96e0a2-c665-4202-b0b8-200dbfd89d40"),
-                    Nome = "Leite Consendado"
+                    Nome = "Leite Condensado"
                 },
                 new Ingrediente {
                     Id = Guid.Parse("5ddff53a-e787-4ad9-9883-39b6cb185aff"),
@@ -65,16 +52,19 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Etapa>()
             .HasData(
                 new Etapa {
+                    Id = Guid.Parse("7e3f9a1c-5b24-4d68-9c07-a2f1d84b6e35"),
                     Descricao = "Adicione o leite condensado, a margarina e o chocolate em pó numa panela funda",
                     Ordem = 1,
                     ReceitaId = Guid.Parse("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe")
                 },
                 new Etapa {
+                    Id = Guid.Parse("c8a05d72-1f9e-4b3a-8e46-0d7b93f2a1c8"),
                     Descricao = "Cozinhe em fogo médio até o brigadeiro se soltar do fundo da panela",
                     Ordem = 2,
                     ReceitaId = Guid.Parse("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe")
                 },
                 new Etapa {
+                    Id = Guid.Parse("3b6d1e94-a7c2-4f05-b18d-e5c90a47d263"),
                     Descricao = "Resfrie e prepare no formato de pequenas bolas, cobrindo com o chocolate granulado",
                     Ordem = 3,
                     ReceitaId = Guid.Parse("2cb2ecf2-0bbe-4098-831c-e0868a85b3fe")
