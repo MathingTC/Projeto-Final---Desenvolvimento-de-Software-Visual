@@ -104,4 +104,61 @@ app.MapPut("/api/ingredientes/editar/{id}", (
     return Results.Created("Ingrediente atualizado", ing);
 });
 
+// -- Endpoint Cadastrar Receitas
+app.MapPost("/api/receitas/cadastrar", (
+    [FromBody] Receita? receita,
+    [FromServices] AppDataContext ctx) =>
+{
+    if (receita == null)
+    {
+        return Results.BadRequest("Dados inválidos.");
+    }
+    if (string.IsNullOrWhiteSpace(receita.Nome))
+    {
+        return Results.BadRequest("O nome da receita não pode ser vazio.");
+    }
+
+    // -- verifica se o ingrediente no banco de dados
+    foreach (var ingrediente in receita.IngredienteReceitas)
+    {
+        bool existe = ctx.Ingredientes.Any(i => i.Id == ingrediente.IngredienteId);
+
+        if (!existe)
+        {
+            return Results.BadRequest("Um dos ingredientes não está cadastrado no banco de dados");
+        }
+
+        // -- quantidade deve ser maior que zero
+        if (ingrediente.Quantidade == null || ingrediente.Quantidade <= 0)
+        {
+            return Results.BadRequest("A quantidade deve ser maior que zero.");
+        }
+
+        // -- unidade de medida não pode ser vazaia.
+        if (string.IsNullOrWhiteSpace(ingrediente.UnidadeMedida))
+        {
+            return Results.BadRequest("A unidade de medida não pode ser vazia.");
+        }
+
+        // -- verifica se as etapas estão na ordem: 1,2,3...
+        var etapasOrdenadas = receita.Etapas.OrderBy(e => e.Ordem).ToList();
+
+        int ordemEsperada = 1;
+
+        foreach (var etapa in etapasOrdenadas)
+        {
+            if (etapa.Ordem != ordemEsperada)
+            {
+                return Results.BadRequest("As etapas devem ter ordem sequencial, começando em 1.");
+            }
+
+            ordemEsperada++;
+        }
+    }
+    ctx.Receitas.Add(receita);
+    ctx.SaveChanges();
+
+    return Results.Created($"/api/receitas/{receita.Id}", receita.Id);
+});
+
 app.Run();
