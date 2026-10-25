@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using Api.DTOs;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDataContext>();
@@ -106,7 +107,7 @@ app.MapPut("/api/ingredientes/editar/{id}", (
 
 // -- Endpoint Cadastrar Receitas
 app.MapPost("/api/receitas/cadastrar", (
-    [FromBody] Receita? receita,
+    [FromBody] CadastrarReceitaDTO? receita,
     [FromServices] AppDataContext ctx) =>
 {
     if (receita == null)
@@ -118,8 +119,8 @@ app.MapPost("/api/receitas/cadastrar", (
         return Results.BadRequest("O nome da receita não pode ser vazio.");
     }
 
-    // -- verifica se o ingrediente no banco de dados
-    foreach (var ingrediente in receita.IngredienteReceitas)
+    // -- verifica se o ingrediente existe no banco de dados
+    foreach (var ingrediente in receita.Ingredientes)
     {
         bool existe = ctx.Ingredientes.Any(i => i.Id == ingrediente.IngredienteId);
 
@@ -134,31 +135,63 @@ app.MapPost("/api/receitas/cadastrar", (
             return Results.BadRequest("A quantidade deve ser maior que zero.");
         }
 
-        // -- unidade de medida não pode ser vazaia.
+        // -- unidade de medida não pode ser vazia.
         if (string.IsNullOrWhiteSpace(ingrediente.UnidadeMedida))
         {
             return Results.BadRequest("A unidade de medida não pode ser vazia.");
         }
-
-        // -- verifica se as etapas estão na ordem: 1,2,3...
-        var etapasOrdenadas = receita.Etapas.OrderBy(e => e.Ordem).ToList();
-
-        int ordemEsperada = 1;
-
-        foreach (var etapa in etapasOrdenadas)
-        {
-            if (etapa.Ordem != ordemEsperada)
-            {
-                return Results.BadRequest("As etapas devem ter ordem sequencial, começando em 1.");
-            }
-
-            ordemEsperada++;
-        }
     }
-    ctx.Receitas.Add(receita);
+    // -- verifica se tem ingredientes repetidos
+    if (receita.Ingredientes.Select(i => i.IngredienteId).Distinct().Count()
+        != receita.Ingredientes.Count)
+    {
+        return Results.BadRequest("Não pode repetir o mesmo ingrediente na receita.");
+    }
+     // -- verifica se as etapas estão na ordem: 1,2,3...
+    var etapasOrdenadas = receita.Etapas.OrderBy(e => e.Ordem).ToList();
+
+    int ordemEsperada = 1;
+
+    foreach (var etapa in etapasOrdenadas)
+    {
+        if (etapa.Ordem != ordemEsperada)
+        {
+            return Results.BadRequest("As etapas devem ter ordem sequencial, começando em 1.");
+        }
+        ordemEsperada++;
+    }
+
+    // -- cria uma nova receita com os dados recebidos do DTO
+    Receita novaReceita = new Receita
+    {
+        Nome = receita.Nome,
+        Descricao = receita.Descricao
+    };
+    
+    // -- adiciona os ingredientes na "novaReceita"
+    foreach (var ingrediente in receita.Ingredientes)
+    {
+        novaReceita.IngredienteReceitas.Add(new IngredienteReceita
+        {
+            IngredienteId = ingrediente.IngredienteId,
+            Quantidade = ingrediente.Quantidade,
+            UnidadeMedida = ingrediente.UnidadeMedida
+        });
+    }
+    
+    // -- adiciona as etapas na nova receita
+    foreach (var etapa in receita.Etapas)
+    {
+        novaReceita.Etapas.Add(new Etapa
+        {
+            Ordem = etapa.Ordem,
+            Descricao = etapa.Descricao
+        });
+    }
+    ctx.Receitas.Add(novaReceita);
     ctx.SaveChanges();
 
-    return Results.Created($"/api/receitas/{receita.Id}", receita.Id);
+    return Results.Created($"/api/receitas/{novaReceita.Id}", novaReceita.Id);
 });
 
 app.Run();
