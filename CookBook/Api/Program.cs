@@ -6,6 +6,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDataContext>();
 var app = builder.Build();
 
+app.MapGet("/", () => "Hello World!");
+
 //Endpoint para cadastrar um ingrediente POST
 app.MapPost("/api/ingredientes/cadastrar", (
     [FromBody] Ingrediente? ing, 
@@ -192,6 +194,35 @@ app.MapPost("/api/receitas/cadastrar", (
     ctx.SaveChanges();
 
     return Results.Created($"/api/receitas/{novaReceita.Id}", novaReceita.Id);
+});   
+
+//Endpoint para buscar receita por id
+app.MapGet("/api/receitas/{id}", (
+    [FromRoute] Guid id,
+    [FromServices] AppDataContext ctx) =>
+    {
+        var receita = ctx.Receitas
+        .Where(r => r.Id == id)
+        .Select(r => new
+        {
+            r.Nome,
+            r.Descricao,
+            Etapas = r.Etapas
+            .OrderBy(e => e.Ordem)
+            .Select(e => new
+            {
+                e.Ordem,
+                e.Descricao
+            })
+        })
+    .FirstOrDefault();
+
+    if (receita == null)
+    {
+        return Results.NotFound("Receita não encontrada");
+    }
+
+    return Results.Ok(receita);
 });
 
 app.Run();
