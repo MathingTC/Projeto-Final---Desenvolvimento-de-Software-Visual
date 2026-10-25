@@ -1,10 +1,13 @@
-### Raiz
+###Raiz
 GET http://localhost:5093
 
 ###Cadastrar ingrediente
-POST "/api/ings/cadastrar"
+POST http://localhost:5093/api/ingredientes/cadastrar
 Content-Type: application/json
 
 {
-    "Nome" : "Tomate",
+    "Nome": "Tomate"
 }
+
+###Buscar receita por id
+GET http://localhost:5093/api/receitas/2cb2ecf2-0bbe-4098-831c-e0868a85b3fe
