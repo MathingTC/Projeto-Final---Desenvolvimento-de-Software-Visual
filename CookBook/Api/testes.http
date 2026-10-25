@@ -13,7 +13,7 @@ POST http://localhost:5093/api/ingredientes/cadastrar
 Content-Type: application/json
 
 {
-    "Nome": "Batata doce"
+    "Nome": "Cebola"
 }
 
 ###aqui tem que dar erro pois o nome está vazio
@@ -27,12 +27,12 @@ Content-Type: application/json
 ###Listar Ingredientes
 GET http://localhost:5093/api/ingredientes/listar
 
-###Editar ingrediente
-PUT http://localhost:5093/api/ingredientes/editar/NÃO ESQUECER DE COLOCAR O ID AQUI
+###Editar ingrediente (Chocolate granulado, dado já existente)
+PUT http://localhost:5093/api/ingredientes/editar/59F0D6FC-6FD6-44AD-8333-4890587B07C8
 Content-Type: application/json
 
 {
-    "Nome": "Tomate"
+    "Nome": "Granulado de chocolate"
 }
 
 ###Editar ingrediente que não existe (esperado: 404 "Ingrediente não encontrado")
@@ -89,38 +89,40 @@ Content-Type: application/json
     ]
 }
 
-###Buscar a receita criada
+###Buscar a receita criada (Brigadeiro, dado já existente)
 GET http://localhost:5093/api/receitas/2cb2ecf2-0bbe-4098-831c-e0868a85b3fe
 
 ###Buscar receita que não existe (esperado: 404 "Receita não encontrada")
 GET http://localhost:5093/api/receitas/00000000-0000-0000-0000-000000000000
 
-###Buscar receitas por ingredientes
+###Buscar receitas por ingredientes (Brigadeiro e seus ingredientes)
+POST http://localhost:5093/api/receitas/busca
+Content-Type: application/json
+
+{
+    "Ids": [
+        "59F0D6FC-6FD6-44AD-8333-4890587B07C8",
+        "5DDFF53A-E787-4AD9-9883-39B6CB185AFF",
+        "84582DBA-47A5-4463-9047-999374B05EF9",
+        "CF96E0A2-C665-4202-B0B8-200DBFD89D40"
+    ]
+}
+
+###Buscar com um unico ingrediente, insuficiente para qualquer receita
 POST http://localhost:5093/api/receitas/busca
 Content-Type: application/json
 
 {
     "IngredienteIds": [
-        "ID-TOMATE",
-        "ID-CEBOLA"
+        "59F0D6FC-6FD6-44AD-8333-4890587B07C8"
     ]
 }
 
-###Buscar com um ingrediente que nenhuma receita usa
-POST http://localhost:5093/api/receitas/busca
-Content-Type: application/json
-
-{
-    "IngredienteIds": [
-        "Id de algum ingrediente"
-    ]
-}
-
-###Remover ingrediente que faz parte de uma receita
-DELETE http://localhost:5093/api/ingredientes/remover/Inserir o ID
+###Remover ingrediente que faz parte de uma receita (Chocolate granulado)
+DELETE http://localhost:5093/api/ingredientes/remover/59F0D6FC-6FD6-44AD-8333-4890587B07C8
 
 ###Remover ingrediente sem receitas:
-DELETE http://localhost:5093/api/ingredientes/remover/Inserir o ID
+DELETE http://localhost:5093/api/ingredientes/remover/[[Inserir o ID]]
 
 ###Conferência se o ingrediente saiu da lista
 GET http://localhost:5093/api/ingredientes/listar
