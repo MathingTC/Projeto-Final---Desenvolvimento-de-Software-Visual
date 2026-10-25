@@ -9,9 +9,118 @@ Content-Type: application/json
     "Nome" : "Tomate",
 }
 
-### -- Listar Ingredientes
+POST http://localhost:5093/api/ingredientes/cadastrar
+Content-Type: application/json
+
+{
+    "Nome": "Batata doce"
+}
+
+###aqui tem que dar erro pois o nome está vazio
+POST http://localhost:5093/api/ingredientes/cadastrar
+Content-Type: application/json
+
+{
+    "Nome": ""
+}
+
+###Listar Ingredientes
 GET http://localhost:5093/api/ingredientes/listar
 
+###Editar ingrediente
+PUT http://localhost:5093/api/ingredientes/editar/NÃO ESQUECER DE COLOCAR O ID AQUI
+Content-Type: application/json
 
-###Buscar receita por id
+{
+    "Nome": "Tomate"
+}
+
+###Editar ingrediente que não existe (esperado: 404 "Ingrediente não encontrado")
+PUT http://localhost:5093/api/ingredientes/editar/00000000-0000-0000-0000-000000000000
+Content-Type: application/json
+
+{
+    "Nome": "Qualquer"
+}
+
+#Cadastro de receita
+POST http://localhost:5093/api/receitas/cadastrar
+Content-Type: application/json
+
+{
+    "Nome": "Molho de tomate",
+    "Descricao": "Um molho simples e rápido",
+    "Ingredientes": [
+        {
+            "IngredienteId": "Id do ingrediente tomate",
+            "Quantidade": 5,
+            "UnidadeMedida": "unidades"
+        },
+        {
+            "IngredienteId": "Id do ingrediente cebola",
+            "Quantidade": 1,
+            "UnidadeMedida": "unidade"
+        }
+    ],
+    "Etapas": [
+        { "Ordem": 3, "Descricao": "Deixe cozinhar por 20 minutos" },
+        { "Ordem": 1, "Descricao": "Pique o tomate e a cebola" },
+        { "Ordem": 2, "Descricao": "Refogue a cebola e adicione o tomate" }
+    ]
+}
+
+###Cadastro errado de receita
+POST http://localhost:5093/api/receitas/cadastrar
+Content-Type: application/json
+
+{
+    "Nome": "Receita com etapas erradas",
+    "Descricao": "Pula a etapa 2",
+    "Ingredientes": [
+        {
+            "IngredienteId": "ID-TOMATE",
+            "Quantidade": 2,
+            "UnidadeMedida": "unidades"
+        }
+    ],
+    "Etapas": [
+        { "Ordem": 1, "Descricao": "Primeira etapa" },
+        { "Ordem": 3, "Descricao": "Terceira etapa" }
+    ]
+}
+
+###Buscar a receita criada
 GET http://localhost:5093/api/receitas/2cb2ecf2-0bbe-4098-831c-e0868a85b3fe
+
+###Buscar receita que não existe (esperado: 404 "Receita não encontrada")
+GET http://localhost:5093/api/receitas/00000000-0000-0000-0000-000000000000
+
+###Buscar receitas por ingredientes
+POST http://localhost:5093/api/receitas/busca
+Content-Type: application/json
+
+{
+    "IngredienteIds": [
+        "ID-TOMATE",
+        "ID-CEBOLA"
+    ]
+}
+
+###Buscar com um ingrediente que nenhuma receita usa
+POST http://localhost:5093/api/receitas/busca
+Content-Type: application/json
+
+{
+    "IngredienteIds": [
+        "Id de algum ingrediente"
+    ]
+}
+
+###Remover ingrediente que faz parte de uma receita
+DELETE http://localhost:5093/api/ingredientes/remover/Inserir o ID
+
+###Remover ingrediente sem receitas:
+DELETE http://localhost:5093/api/ingredientes/remover/Inserir o ID
+
+###Conferência se o ingrediente saiu da lista
+GET http://localhost:5093/api/ingredientes/listar
