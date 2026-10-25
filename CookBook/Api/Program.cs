@@ -135,4 +135,39 @@ app.MapGet("/api/receitas/{id}", (
     return Results.Ok(receita);
 });
 
+app.MapPost("/api/receitas/busca", (
+    [FromBody] ReceitaBusca idsBusca,
+    [FromServices] AppDataContext ctx) =>
+{
+    if (idsBusca == null) {
+        return Results.BadRequest("Dados inválidos");
+    }
+
+    var ids = idsBusca.IngredienteIds;
+
+    var receitas = ctx.Receitas
+        .Include(r => r.Ingredientes);
+
+    var receitasValidas = receitas
+        .Where(r => r.Ingredientes.All(i => ids.Contains(i.Id)));
+
+    if (receitasValidas.Count() == 0) {
+        return Results.NotFound("Nenhuma receita encontrada");
+    }
+
+    return Results.Ok(receitasValidas
+        .Select(r => new {
+            r.Nome,
+            Ingredientes = r.IngredienteReceitas
+                .Select(ir => new {
+                    ir.Ingrediente.Nome,
+                    ir.Quantidade,
+                    ir.UnidadeMedida
+            })
+        })
+    );
+});
+
 app.Run();
+
+public record ReceitaBusca(List<Guid> IngredienteIds);
