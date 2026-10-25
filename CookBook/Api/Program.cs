@@ -104,7 +104,13 @@ app.MapPut("/api/ingredientes/editar/{id}", (
 
     ctx.SaveChanges();
 
-    return Results.Created("Ingrediente atualizado", ing);
+    return Results.Created(
+        "",
+        new {
+            ing.Id,
+            ing.Nome
+        }
+    );
 });
 
 // -- Endpoint Cadastrar Receitas
@@ -193,7 +199,14 @@ app.MapPost("/api/receitas/cadastrar", (
     ctx.Receitas.Add(novaReceita);
     ctx.SaveChanges();
 
-    return Results.Created($"/api/receitas/{novaReceita.Id}", novaReceita.Id);
+    return Results.Created(
+        $"/api/receitas/{novaReceita.Id}",
+        new {
+            novaReceita.Id,
+            novaReceita.Nome,
+            novaReceita.Descricao
+        }
+    );
 });   
 
 //Endpoint para buscar receita por id
@@ -207,6 +220,13 @@ app.MapGet("/api/receitas/{id}", (
         {
             r.Nome,
             r.Descricao,
+            Ingredientes = r.IngredienteReceitas
+                .Select(ir => new
+                {
+                    ir.Ingrediente.Nome,
+                    ir.Quantidade,
+                    ir.UnidadeMedida
+                }),
             Etapas = r.Etapas
             .OrderBy(e => e.Ordem)
             .Select(e => new
@@ -215,7 +235,7 @@ app.MapGet("/api/receitas/{id}", (
                 e.Descricao
             })
         })
-    .FirstOrDefault();
+        .FirstOrDefault();
 
     if (receita == null)
     {
@@ -225,21 +245,22 @@ app.MapGet("/api/receitas/{id}", (
     return Results.Ok(receita);
 });
 
+//Endpoint para buscar receita por ingredientes disponíveis
 app.MapPost("/api/receitas/busca", (
-    [FromBody] ReceitaBusca idsBusca,
+    [FromBody] BuscarReceitaDTO idsBusca,
     [FromServices] AppDataContext ctx) =>
 {
     if (idsBusca == null) {
         return Results.BadRequest("Dados inválidos");
     }
 
-    var ids = idsBusca.IngredienteIds;
+    var ids = idsBusca.Ids;
 
-    var receitas = ctx.Receitas
-        .Include(r => r.Ingredientes);
-
-    var receitasValidas = receitas
-        .Where(r => r.Ingredientes.All(i => ids.Contains(i.Id)));
+    var receitasValidas = ctx.Receitas
+        .Where(r =>
+            r.Ingredientes.Any() &&
+            r.Ingredientes.All(i => ids.Contains(i.Id))
+        );
 
     if (receitasValidas.Count() == 0) {
         return Results.NotFound("Nenhuma receita encontrada");
@@ -259,5 +280,3 @@ app.MapPost("/api/receitas/busca", (
 });
 
 app.Run();
-
-public record ReceitaBusca(List<Guid> IngredienteIds);
