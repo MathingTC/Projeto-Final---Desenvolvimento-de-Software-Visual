@@ -6,14 +6,23 @@ POST http://localhost:5093/api/ingredientes/cadastrar
 Content-Type: application/json
 
 {
-    "Nome" : "Tomate",
+    "Nome": "Tomate"
 }
 
+###
 POST http://localhost:5093/api/ingredientes/cadastrar
 Content-Type: application/json
 
 {
     "Nome": "Cebola"
+}
+
+###
+POST http://localhost:5093/api/ingredientes/cadastrar
+Content-Type: application/json
+
+{
+    "Nome": "Batata doce"
 }
 
 ###aqui tem que dar erro pois o nome está vazio
@@ -43,7 +52,7 @@ Content-Type: application/json
     "Nome": "Qualquer"
 }
 
-#Cadastro de receita
+###Cadastro de receita
 POST http://localhost:5093/api/receitas/cadastrar
 Content-Type: application/json
 
@@ -52,12 +61,12 @@ Content-Type: application/json
     "Descricao": "Um molho simples e rápido",
     "Ingredientes": [
         {
-            "IngredienteId": "Id do ingrediente tomate",
+            "IngredienteId": "id do tomate",
             "Quantidade": 5,
             "UnidadeMedida": "unidades"
         },
         {
-            "IngredienteId": "Id do ingrediente cebola",
+            "IngredienteId": "1b614af8-c66d-4356-98c3-740bad9b51c0",
             "Quantidade": 1,
             "UnidadeMedida": "unidade"
         }
