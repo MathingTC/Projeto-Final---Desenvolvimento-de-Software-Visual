@@ -6,9 +6,10 @@ POST http://localhost:5093/api/ingredientes/cadastrar
 Content-Type: application/json
 
 {
-    "Nome" : "Tomate",
+    "Nome": "Tomate"
 }
 
+###
 POST http://localhost:5093/api/ingredientes/cadastrar
 Content-Type: application/json
 
