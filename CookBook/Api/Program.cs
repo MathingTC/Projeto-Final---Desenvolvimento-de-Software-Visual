@@ -74,7 +74,7 @@ app.MapDelete("/api/ingredientes/remover/{id}", (
     }
 
     ctx.Ingredientes.Remove(ing);
-    //ctx.SaveChanges();
+    ctx.SaveChanges();
 
     return Results.NoContent();
 });

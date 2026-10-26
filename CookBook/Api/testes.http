@@ -41,7 +41,7 @@ PUT http://localhost:5093/api/ingredientes/editar/59F0D6FC-6FD6-44AD-8333-489058
 Content-Type: application/json
 
 {
-    "Nome": "Granulado de chocolate"
+    "Nome": "Granulado de chocolate1"
 }
 
 ###Editar ingrediente que não existe (esperado: 404 "Ingrediente não encontrado")
@@ -61,12 +61,12 @@ Content-Type: application/json
     "Descricao": "Um molho simples e rápido",
     "Ingredientes": [
         {
-            "IngredienteId": "id do tomate",
+            "IngredienteId": "toamte",
             "Quantidade": 5,
             "UnidadeMedida": "unidades"
         },
         {
-            "IngredienteId": "1b614af8-c66d-4356-98c3-740bad9b51c0",
+            "IngredienteId": "879041d0-01db-4bdf-ac19-282398d4cb11",
             "Quantidade": 1,
             "UnidadeMedida": "unidade"
         }
@@ -110,10 +110,8 @@ Content-Type: application/json
 
 {
     "Ids": [
-        "59F0D6FC-6FD6-44AD-8333-4890587B07C8",
-        "5DDFF53A-E787-4AD9-9883-39B6CB185AFF",
-        "84582DBA-47A5-4463-9047-999374B05EF9",
-        "CF96E0A2-C665-4202-B0B8-200DBFD89D40"
+        "879041d0-01db-4bdf-ac19-282398d4cb11",
+        "tomate"
     ]
 }
 
@@ -123,15 +121,15 @@ Content-Type: application/json
 
 {
     "IngredienteIds": [
-        "59F0D6FC-6FD6-44AD-8333-4890587B07C8"
+        "879041d0-01db-4bdf-ac19-282398d4cb11"
     ]
 }
 
 ###Remover ingrediente que faz parte de uma receita (Chocolate granulado)
-DELETE http://localhost:5093/api/ingredientes/remover/59F0D6FC-6FD6-44AD-8333-4890587B07C8
+DELETE http://localhost:5093/api/ingredientes/remover/59f0d6fc-6fd6-44ad-8333-4890587b07c8
 
 ###Remover ingrediente sem receitas:
-DELETE http://localhost:5093/api/ingredientes/remover/[[Inserir o ID]]
+DELETE http://localhost:5093/api/ingredientes/remover/id batata doce
 
 ###Conferência se o ingrediente saiu da lista
 GET http://localhost:5093/api/ingredientes/listar
