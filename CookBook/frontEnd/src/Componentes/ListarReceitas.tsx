@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Receita } from "../Models/Receita";
 
-function ListarReceitas(){
+function ListarReceitas({onSelecionarReceita}: {
+    onSelecionarReceita: (id: string) => void;
+}){
     const [receitas, setReceitas] = useState<Receita[]>([]);
-    const [receitaSelecionada, setReceitaSelecionada] = useState<Receita | null>(null);
     const [carregando, setCarregando] = useState(true);
     const [erro, setErro] = useState("");
 
@@ -43,7 +44,7 @@ function ListarReceitas(){
                     <div key={receita.id} className="card-receita">
                         <h3>{receita.nome}</h3>
                         <p>{receita.descricao}</p>
-                        <button onClick={() => setReceitaSelecionada(receita)}>
+                        <button onClick={() => onSelecionarReceita(receita.id)}>
                             Ver receita
                         </button>
                     </div>
