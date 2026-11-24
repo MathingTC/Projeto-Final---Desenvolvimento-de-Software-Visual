@@ -1,5 +1,5 @@
 import React from "react";
-import ListarReceitas from "./Componentes/ListarReceistas";
+import ListarReceitas from "./Componentes/ListarReceitas";
 
 function App() {
   return (
@@ -7,11 +7,15 @@ function App() {
       {/* Header */}
     
       <main>
-        {/* listarReceitas */}
-        <ListarReceitas />
+        <div className="coluna-receitas">
+          {/* listarReceitas */}
+          <ListarReceitas />
+        </div>
 
-        
-        {/* Listar Ingredientes */}
+        <div className="coluna-ingredientes">
+          {/* Listar Ingredientes */}
+        </div>
+
       </main>
     </>
   );
