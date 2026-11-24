@@ -42,7 +42,14 @@ function CardReceita({id, onVoltar}: {
             <ul>
                 {detalhes.ingredientes.map((ingrediente, index) => (
                     <li key={index}>
-                        {ingrediente.quantidade} {ingrediente.unidadeMedida} de {ingrediente.nome}
+                        {ingrediente.quantidade && ingrediente.unidadeMedida
+                            ?`${ingrediente.quantidade} ${ingrediente.unidadeMedida} de 
+                            ${ingrediente.nome}`
+                            : ingrediente.quantidade
+                             
+                            ? `${ingrediente.quantidade} ${ingrediente.nome}`
+                            : ingrediente.nome
+                        }
                     </li>
                 ))}
             </ul>
