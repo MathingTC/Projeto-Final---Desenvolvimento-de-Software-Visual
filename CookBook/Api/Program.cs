@@ -4,6 +4,19 @@ using Api.DTOs;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDataContext>();
+
+// Configuração do CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("PermitirFrontend", policy =>
+    {
+        policy
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 app.MapGet("/", () => "Hello World!");
@@ -279,4 +292,5 @@ app.MapPost("/api/receitas/busca", (
     );
 });
 
+app.UseCors("PermitirFrontend");
 app.Run();
