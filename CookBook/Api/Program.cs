@@ -209,6 +209,22 @@ app.MapPost("/api/receitas/cadastrar", (
     );
 });   
 
+// Endpoint para listar todas as receitas
+app.MapGet("/api/receitas/listar", ([FromServices] AppDataContext ctx) =>
+{
+    var receitas = ctx.Receitas
+        .OrderBy(r => r.Nome)
+        .Select(r => new
+        {
+            r.Id,
+            r.Nome,
+            r.Descricao
+        })
+        .ToList();
+
+    return Results.Ok(receitas);
+});
+
 //Endpoint para buscar receita por id
 app.MapGet("/api/receitas/{id}", (
     [FromRoute] Guid id,
