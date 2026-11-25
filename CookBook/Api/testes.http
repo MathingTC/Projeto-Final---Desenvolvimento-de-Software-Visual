@@ -78,6 +78,9 @@ Content-Type: application/json
     ]
 }
 
+###Listar receitas
+GET http://localhost:5093/api/receitas/listar
+
 ###Cadastro errado de receita
 POST http://localhost:5093/api/receitas/cadastrar
 Content-Type: application/json

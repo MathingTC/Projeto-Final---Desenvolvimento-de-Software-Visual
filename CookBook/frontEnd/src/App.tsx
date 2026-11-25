@@ -1,13 +1,36 @@
-import React from "react";
-//1 - Um componente SEMPRE deve começar com a primeira letra
-//maiúscula
-//2 - Todo componente DEVE ser uma função do JS
-//3 - Todo deve retornar apenas UM elemento HTML
+import React, { useState } from "react";
+import ListarReceitas from "./Componentes/ListarReceitas";
+import CardReceita from "./Componentes/CardReceita";
+
 function App() {
+  const [receitaSelecionada, setReceitaSelecionada] = useState<string | null>(null);
+  if (receitaSelecionada !== null){
+    return (
+      <CardReceita
+        id={receitaSelecionada}
+        onVoltar={() => setReceitaSelecionada(null)}
+      />
+    );
+  }
+
   return (
-    <div>
-      <h1>Teste</h1>
-    </div>
+    <>
+      <div>
+        {/* Header */}
+      </div>
+    
+      <main>
+        <div className="coluna-receitas">
+          {/* listarReceitas */}
+          <ListarReceitas onSelecionarReceita={(id) => setReceitaSelecionada(id)} />
+        </div>
+
+        <div className="coluna-ingredientes">
+          {/* Listar Ingredientes */}
+        </div>
+
+      </main>
+    </>
   );
 }
 
