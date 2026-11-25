@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Receita } from "../Models/Receita";
+import "./Css/ListarReceita.css";
 
 function ListarReceitas({onSelecionarReceita}: {
     onSelecionarReceita: (id: string) => void;
@@ -31,20 +32,25 @@ function ListarReceitas({onSelecionarReceita}: {
 
     return(
         <section>
-            <h2>Receitas</h2>
+            <h2 className="titulo-receita">👨‍🍳 Receitas 👨‍🍳</h2>
+            <p className="subtitulo-receitas">
+                Escolha a receita que mais combina com seu paladar
+                e descubra como prepará-la passo a passo!
+            </p>
             {carregando && <p>Carregando receitas...</p>}
             {erro && <p>{erro}</p>}
 
             {!carregando && !erro && receitas.length === 0 && (
-                <p>Nnehuma receita cadastrada! </p>
+                <p>Nenhuma receita cadastrada! </p>
             )}
 
             <div className="lista-receitas">
                 {receitas.map((receita) => (
                     <div key={receita.id} className="card-receita">
-                        <h3>{receita.nome}</h3>
-                        <p>{receita.descricao}</p>
-                        <button onClick={() => onSelecionarReceita(receita.id)}>
+                        <h3 className="titulo-card">{receita.nome}</h3>
+                        <p className="descricao-card">{receita.descricao}</p>
+                        <button className="botao-receita"
+                         onClick={() => onSelecionarReceita(receita.id)}>
                             Ver receita
                         </button>
                     </div>
