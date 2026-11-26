@@ -4,6 +4,7 @@ import CardReceita from "./Componentes/CardReceita";
 import ListarIngredientes from "./Componentes/ListarIngredientes";
 import FormIngrediente from "./Componentes/FormIngrediente";
 import { Ingrediente } from "./Models/Ingrediente";
+import "./app.css";
 
 function App() {
   const [receitaSelecionada, setReceitaSelecionada] = useState<string | null>(null);
