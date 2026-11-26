@@ -3,25 +3,25 @@ import { Ingrediente } from "../Models/Ingrediente";
 import axios from "axios";
 
 interface IngredientRow {
-    key: number; // stable React key, so removing a row doesn't shuffle the others' state
-    value: number | null; // null = nothing selected yet
+    key: number;
+    value: string;
     count: number | null;
     unit: string;
 }
 
 interface StepRow {
     desc: string;
-    order: number;
+    key: number;
 }
 
-function CadastrarEditarReceita() {
+function CadastrarEditarReceita({onSubmit}: {onSubmit: () => void;}) {
     const nextKey = useRef(1);
 
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
-    const [ingredRows, setIngredRows] = useState<IngredientRow[]>([{ key: 0, value: null, count: null, unit: ''}]);
+    const [ingredRows, setIngredRows] = useState<IngredientRow[]>([{ key: 0, value: '', count: null, unit: ''}]);
     const [ingreds, setIngreds] = useState<Ingrediente[]>([]);
-    const [stepRows, setStepRows] = useState<StepRow[]>([{ order: 0, desc: '' }])
+    const [stepRows, setStepRows] = useState<StepRow[]>([{ key: 0, desc: '' }])
     const [carregando, setCarregando] = useState(true);
 
     useEffect(() => {
@@ -38,49 +38,27 @@ function CadastrarEditarReceita() {
     }, []);
 
     const addIngredient = () => {
-        setIngredRows((prev) => [...prev, { key: nextKey.current++, value: null, count: null, unit: '' }]);
+        setIngredRows((prev) => [...prev, { key: nextKey.current++, value: '', count: null, unit: '' }]);
     };
 
     const removeIngredient = (key: number) => {
         setIngredRows((prev) => prev.filter((row) => row.key !== key));
     };
 
-    const updateIngredient = (key: number, value: number | null, count: number | null, unit: string) => {
+    const updateIngredient = (key: number, value: string, count: number | null, unit: string) => {
         setIngredRows((prev) =>
             prev.map((row) => (row.key === key ? { ...row, value, count, unit } : row))
         );
     };
 
-    const reorderSteps = (steps: StepRow[]) => {
-        steps.sort((a,b) => a.order - b.order);
-        steps.forEach((_, i) => {
-            steps[i].order = i;
-        });
+    const addStep = () =>
+        setStepRows((prev) => [...prev, { key: nextKey.current++, desc: "" }]);
 
-        return steps;
-    }
+    const removeStep = (key: number) =>
+        setStepRows((prev) => prev.filter((s) => s.key !== key));
 
-    const addStep = () => {
-        setStepRows((prev) => {
-            const newSteps = [...prev, { order: prev.length, desc: '' }]
-
-            return reorderSteps(newSteps)
-        });
-    }
-
-    const removeStep = (order: number) => {
-        setStepRows((prev) => {
-            const newSteps = prev.filter((s) => s.order !== order);
-
-            return reorderSteps(newSteps);
-        });
-    }
-
-    const updateStep = (order: number, desc: string) => {
-        setStepRows((prev) => {
-            return prev.map((row) => (row.order === order ? { ...row, desc } : row))
-        });
-    }
+    const updateStep = (key: number, desc: string) =>
+        setStepRows((prev) => prev.map((s) => (s.key === key ? { ...s, desc } : s)));
 
     const handleSubmit = (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -93,7 +71,8 @@ function CadastrarEditarReceita() {
                 ingredienteId: row.value,
                 quantidade: row.count == 0 ? null : row.count,
                 unidadeMedida: row.unit,
-            };})
+            };}),
+          etapas: stepRows.map((s, i) => ({ ordem: i+1, descricao: s.desc }))
         };
 
         axios.post(
@@ -101,8 +80,11 @@ function CadastrarEditarReceita() {
             {
                 nome: recipe.name,
                 descricao: recipe.description,
-                ingredientes: recipe.ingredients
+                ingredientes: recipe.ingredients,
+                etapas: recipe.etapas
             }
+        ).then(
+            onSubmit
         );
     };
 
@@ -111,10 +93,10 @@ function CadastrarEditarReceita() {
     {carregando && <p>Carregando ingredientes...</p>}
 
     <form onSubmit={handleSubmit}>
-      <h1>Submit a Recipe</h1>
+      <h1>Criação de Receita</h1>
 
       <div>
-        <label htmlFor="name">Name</label>
+        <label htmlFor="name">Nome</label>
         <input
           id="name"
           type="text"
@@ -125,7 +107,7 @@ function CadastrarEditarReceita() {
       </div>
 
       <div>
-        <label htmlFor="description">Description</label>
+        <label htmlFor="description">Descrição</label>
         <textarea
           id="description"
           value={description}
@@ -135,7 +117,7 @@ function CadastrarEditarReceita() {
       </div>
 
       <fieldset>
-        <legend>Ingredients</legend>
+        <legend>Ingredientes</legend>
 
         {ingredRows.map((row, index) => (
           <div key={row.key}>
@@ -145,7 +127,7 @@ function CadastrarEditarReceita() {
               onChange={(e) =>
                 updateIngredient(
                   row.key,
-                  e.target.value === "" ? null : Number(e.target.value),
+                  e.target.value,
                   row.count,
                   row.unit
                 )
@@ -205,19 +187,19 @@ function CadastrarEditarReceita() {
       <fieldset>
         <legend>Etapas</legend>
         {stepRows.map((row, index) => (
-          <div key={row.order}>
+          <div key={row.key}>
             <input
                 type="text"
                 value={row.desc}
                 onChange={(e) => updateStep(
-                    row.order,
+                    row.key,
                     e.target.value
                 )}
             />
 
             <button
               type="button"
-              onClick={() => removeStep(row.order)}
+              onClick={() => removeStep(row.key)}
               aria-label={`Remove ingredient ${index + 1}`}
             >
               Remove
@@ -230,7 +212,7 @@ function CadastrarEditarReceita() {
         </button>
       </fieldset>
 
-      <button type="submit">Submit recipe</button>
+      <button type="submit">Criar receita</button>
     </form>
     </div>
     );

@@ -3,8 +3,9 @@ import axios from "axios";
 import { Receita } from "../Models/Receita";
 import "./Css/ListarReceita.css";
 
-function ListarReceitas({onSelecionarReceita}: {
+function ListarReceitas({onSelecionarReceita, onAdicionarReceita}: {
     onSelecionarReceita: (id: string) => void;
+    onAdicionarReceita: () => void;
 }){
     const [receitas, setReceitas] = useState<Receita[]>([]);
     const [carregando, setCarregando] = useState(true);
@@ -43,6 +44,13 @@ function ListarReceitas({onSelecionarReceita}: {
             {!carregando && !erro && receitas.length === 0 && (
                 <p>Nenhuma receita cadastrada! </p>
             )}
+
+            <button
+                type="button"
+                onClick={onAdicionarReceita}
+            >
+            Adicionar Receita
+            </button>
 
             <div className="lista-receitas">
                 {receitas.map((receita) => (
