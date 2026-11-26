@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ListarReceitas from "./Componentes/ListarReceitas";
 import CardReceita from "./Componentes/CardReceita";
+import "./app.css";
 
 function App() {
   const [receitaSelecionada, setReceitaSelecionada] = useState<string | null>(null);
@@ -28,7 +29,6 @@ function App() {
         <div className="coluna-ingredientes">
           {/* Listar Ingredientes */}
         </div>
-
       </main>
     </>
   );

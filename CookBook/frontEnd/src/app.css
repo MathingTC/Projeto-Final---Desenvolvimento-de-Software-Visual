@@ -1,0 +1,14 @@
+main {
+    display: flex;
+    gap: 20px;
+    padding: 15px;
+}
+
+.coluna-receitas {
+    width: 50%;
+    padding: 20px;
+    background-color: #f8faf8;
+    border: 1px solid #e5eae5;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
